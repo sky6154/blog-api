@@ -1,0 +1,97 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.6.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://repo.spring.io/release" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "https://repo.spring.io/release" }
+}
+
+// idea에서 providedRuntime이 정상 동작 하지 않는 문제로 별도 설정
+configurations {
+    customProvidedRuntime
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter')
+
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('com.google.code.gson:gson:2.8.2')
+//    compile("org.springframework.boot:spring-boot-starter-security")
+
+    compile('com.querydsl:querydsl-jpa')
+    compile('com.querydsl:querydsl-core')
+    compile('com.querydsl:querydsl-apt')
+
+    customProvidedRuntime('javax.inject:javax.inject:1')
+
+//	runtime('org.springframework.boot:spring-boot-devtools')
+    compileOnly("org.projectlombok:lombok")
+    compile("mysql:mysql-connector-java")
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+/**** QueryDSL Class Generate Script ****/
+def queryDslOutput = file("src/main/generated")
+sourceSets {
+    main {
+        java {
+            srcDirs queryDslOutput
+        }
+    }
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", 'com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+    ]
+    destinationDir = file('./src/main/generated')
+}
+
+compileJava{
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+    options.compilerArgs << "-XDignore.symbol.file"
+}
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+        sourceDirs += file('src/main/generated')
+    }
+}
+
+/** gradle clean 시 함께 동작 **/
+clean {
+    delete file('./src/main/generated')
+}
