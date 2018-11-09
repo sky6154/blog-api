@@ -18,8 +18,26 @@ public class BlogPostController {
 
     @RequestMapping("/getAll")
     @ResponseBody
-    public String getAllAgency() {
+    public String getAllPost() {
         return gson.toJson(bs.getAllPost());
     }
 
+
+    @RequestMapping("/{postId}")
+    @ResponseBody
+    public String getPostById(@PathVariable("postId") Integer postId) {
+        return gson.toJson(bs.getPostById(postId));
+    }
+
+    @RequestMapping("/getPopularPost")
+    @ResponseBody
+    public String getPopularPost() {
+        return gson.toJson(bs.getPopularPost());
+    }
+
+    @RequestMapping("/getRecentPost")
+    @ResponseBody
+    public String getRecentPost() {
+        return gson.toJson(bs.getRecentPost());
+    }
 }
