@@ -19,7 +19,7 @@ node {
 
                 def deployWorkerList = []
 
-                if("${env.CURRENT_ENV}" == "blue"){
+                if("${env.CURRENT_BACK_ENV}" == "blue"){
                     deployWorkerList.add("GreenB2")
 
                     stage('deploy swarm worker'){
