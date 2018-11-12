@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+        my_blog_api:
+                build:
+                        context: .
+
+                image: blog-api:latest
+
+                container_name: myBlogAPI
+
+                ports:
+                       - "80:80"

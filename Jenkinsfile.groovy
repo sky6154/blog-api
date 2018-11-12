@@ -12,65 +12,65 @@ node {
 
         switch(params.JOB){
             case "build&deploy":
-//                stage('docker-compose build & save image'){
-//                    sh "docker-compose build"
-//                    sh "docker save -o blog-front.tar blog-front:latest"
-//                }
-//
-//                def deployWorkerList = []
-//
-//                if("${env.CURRENT_ENV}" == "blue"){
-//                    deployWorkerList.add("GreenB2")
-//
-//                    stage('deploy swarm worker'){
-//                        def stepsForParallel = deployWorkerList.collectEntries {
-//                            ["${it}" : deployWorker(it)]
-//                        }
-//                        parallel stepsForParallel
-//                    }
-//
-//                    stage('deploy swarm manager'){
-//                        deployManager("GreenB1")
-//                    }
-//
-//                    stage('overwrite env'){
-//                        overwriteEnv("green")
-//                    }
-//
-//                    stage('overwrite nginx conf'){
-//                        sh "docker cp /var/deploy_env_conf/green_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
-//                    }
-//
-//                    stage('reload nginx'){
-//                        sh "docker kill -s HUP myNginx"
-//                    }
-//                }
-//                else{
-//                    deployWorkerList.add("BlueB2")
-//
-//                    stage('deploy swarm worker'){
-//                        def stepsForParallel = deployWorkerList.collectEntries {
-//                            ["${it}" : deployWorker(it)]
-//                        }
-//                        parallel stepsForParallel
-//                    }
-//
-//                    stage('deploy swarm manager'){
-//                        deployManager("BlueB1")
-//                    }
-//
-//                    stage('overwrite env'){
-//                        overwriteEnv("blue")
-//                    }
-//
-//                    stage('overwrite nginx conf'){
-//                        sh "docker cp /var/deploy_env_conf/blue_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
-//                    }
-//
-//                    stage('reload nginx'){
-//                        sh "docker kill -s HUP myNginx"
-//                    }
-//                }
+                stage('docker-compose build & save image'){
+                    sh "docker-compose build"
+                    sh "docker save -o blog-api.tar blog-api:latest"
+                }
+
+                def deployWorkerList = []
+
+                if("${env.CURRENT_ENV}" == "blue"){
+                    deployWorkerList.add("GreenB2")
+
+                    stage('deploy swarm worker'){
+                        def stepsForParallel = deployWorkerList.collectEntries {
+                            ["${it}" : deployWorker(it)]
+                        }
+                        parallel stepsForParallel
+                    }
+
+                    stage('deploy swarm manager'){
+                        deployManager("GreenB1")
+                    }
+
+                    stage('overwrite env'){
+                        overwriteEnv("green")
+                    }
+
+                    stage('overwrite nginx conf'){
+                        sh "docker cp /var/deploy_env_conf/green_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
+                    }
+
+                    stage('reload nginx'){
+                        sh "docker kill -s HUP myNginx"
+                    }
+                }
+                else{
+                    deployWorkerList.add("BlueB2")
+
+                    stage('deploy swarm worker'){
+                        def stepsForParallel = deployWorkerList.collectEntries {
+                            ["${it}" : deployWorker(it)]
+                        }
+                        parallel stepsForParallel
+                    }
+
+                    stage('deploy swarm manager'){
+                        deployManager("BlueB1")
+                    }
+
+                    stage('overwrite env'){
+                        overwriteEnv("blue")
+                    }
+
+                    stage('overwrite nginx conf'){
+                        sh "docker cp /var/deploy_env_conf/blue_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
+                    }
+
+                    stage('reload nginx'){
+                        sh "docker kill -s HUP myNginx"
+                    }
+                }
                 break
         }
     }
