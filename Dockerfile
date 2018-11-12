@@ -1,4 +1,4 @@
-FROM openjdk:10-jdk-alpine
+FROM openjdk:10-jdk
 
 MAINTAINER kokj <sky6154@gmail.com>
 
