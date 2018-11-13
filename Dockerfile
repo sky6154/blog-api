@@ -9,4 +9,4 @@ COPY ${JAR_FILE} develobeer.jar
 EXPOSE 80
 
 # Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=live","-jar","/develobeer.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.sprofiles.active=live","-jar","/develobeer.jar"]
