@@ -19,7 +19,7 @@ node {
         }
 
         stage('Build Gradle'){
-            sh "whoami"
+            sh "chmod +x gradlew"
             sh "./gradlew build"
         }
 
