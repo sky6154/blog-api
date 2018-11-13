@@ -22,6 +22,11 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+bootJar {
+    baseName = 'develobeer'
+    version =  '0.1.0'
+}
+
 repositories {
     mavenCentral()
     maven { url "https://repo.spring.io/snapshot" }
@@ -42,11 +47,11 @@ dependencies {
     compile('com.google.code.gson:gson:2.8.2')
 //    compile("org.springframework.boot:spring-boot-starter-security")
 
-    compile('com.querydsl:querydsl-jpa')
-    compile('com.querydsl:querydsl-core')
-    compile('com.querydsl:querydsl-apt')
+//    compile('com.querydsl:querydsl-jpa')
+//    compile('com.querydsl:querydsl-core')
+//    compile('com.querydsl:querydsl-apt')
 
-    customProvidedRuntime('javax.inject:javax.inject:1')
+//    customProvidedRuntime('javax.inject:javax.inject:1')
 
 //	runtime('org.springframework.boot:spring-boot-devtools')
     compileOnly("org.projectlombok:lombok")
