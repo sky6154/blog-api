@@ -69,15 +69,15 @@ dependencies {
 //    }
 //}
 
-task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
-    source = sourceSets.main.java
-    classpath = configurations.compile
-    options.compilerArgs = [
-            "-proc:only",
-            "-processor", 'com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
-    ]
-    destinationDir = file('./src/main/generated')
-}
+//task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+//    source = sourceSets.main.java
+//    classpath = configurations.compile
+//    options.compilerArgs = [
+//            "-proc:only",
+//            "-processor", 'com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+//    ]
+//    destinationDir = file('./src/main/generated')
+//}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.10.2' //we want gradle 4.10.2 to run this project
