@@ -18,6 +18,10 @@ node {
             sh "cp -rf /var/backend_config/application.yml ./resources/"
         }
 
+        stage('Build Gradle'){
+            sh "./gradlew build"
+        }
+
         switch(params.JOB){
             case "build&deploy":
                 stage('docker-compose build & save image'){
