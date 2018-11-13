@@ -60,14 +60,14 @@ dependencies {
 }
 
 /**** QueryDSL Class Generate Script ****/
-def queryDslOutput = file("src/main/generated")
-sourceSets {
-    main {
-        java {
-            srcDirs queryDslOutput
-        }
-    }
-}
+//def queryDslOutput = file("src/main/generated")
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs queryDslOutput
+//        }
+//    }
+//}
 
 task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
     source = sourceSets.main.java
@@ -83,24 +83,25 @@ task wrapper(type: Wrapper) {
     gradleVersion = '4.10.2' //we want gradle 4.10.2 to run this project
 }
 
-compileJava{
-    dependsOn generateQueryDSL
-    source generateQueryDSL.destinationDir
-
-    options.fork = true
-    options.forkOptions.executable = 'javac'
-    options.compilerArgs << "-XDignore.symbol.file"
-}
-
-idea {
-    module {
-        inheritOutputDirs = false
-        outputDir = file("$buildDir/classes/main/")
-        sourceDirs += file('src/main/generated')
-    }
-}
-
-/** gradle clean 시 함께 동작 **/
-clean {
-    delete file('./src/main/generated')
-}
+//
+//compileJava{
+//    dependsOn generateQueryDSL
+//    source generateQueryDSL.destinationDir
+//
+//    options.fork = true
+//    options.forkOptions.executable = 'javac'
+//    options.compilerArgs << "-XDignore.symbol.file"
+//}
+//
+//idea {
+//    module {
+//        inheritOutputDirs = false
+//        outputDir = file("$buildDir/classes/main/")
+//        sourceDirs += file('src/main/generated')
+//    }
+//}
+//
+///** gradle clean 시 함께 동작 **/
+//clean {
+//    delete file('./src/main/generated')
+//}
