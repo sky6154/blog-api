@@ -3,9 +3,10 @@ MAINTAINER kokj <sky6154@gmail.com>
 
 EXPOSE 80
 
-ARG JAR_FILE
+VOLUME /tmp
+ARG DEPENDENCY=target/dependency
+COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY ${DEPENDENCY}/META-INF /app/META-INF
+COPY ${DEPENDENCY}/BOOT-INF/classes /app
 
-COPY ${JAR_FILE} develobeer.jar
-
-# Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=live","-jar","/develobeer.jar"]
+ENTRYPOINT ["java","-cp","app:app/lib/*","blog.develobeer.api.Application"]
