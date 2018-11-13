@@ -10,6 +10,11 @@ node {
             checkout scm
         }
 
+        stage('Copy application.yml'){
+            sh "mkdir resources"
+            sh "cp -rf /var/backend_config/application.yml ./resources/"
+        }
+
         switch(params.JOB){
             case "build&deploy":
                 stage('docker-compose build & save image'){
