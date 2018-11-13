@@ -11,7 +11,10 @@ node {
         }
 
         stage('Copy application.yml'){
-            sh "[[ -e ./resources ]] && echo resources already exists || mkdir resources"
+            if(!fileExists('./resources')){
+                sh "mkdir resources"
+            }
+
             sh "cp -rf /var/backend_config/application.yml ./resources/"
         }
 
