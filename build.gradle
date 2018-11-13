@@ -79,6 +79,10 @@ task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates
     destinationDir = file('./src/main/generated')
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2.1' //we want gradle 2.10 to run this project
+}
+
 compileJava{
     dependsOn generateQueryDSL
     source generateQueryDSL.destinationDir
