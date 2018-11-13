@@ -80,7 +80,7 @@ task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1' //we want gradle 2.10 to run this project
+    gradleVersion = '4.10.2' //we want gradle 4.10.2 to run this project
 }
 
 compileJava{
