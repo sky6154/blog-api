@@ -11,11 +11,11 @@ node {
         }
 
         stage('Copy application.yml'){
-            if(!fileExists('./resources')){
-                sh "mkdir resources"
+            if(!fileExists('./src/main/resources')){
+                sh "mkdir ./src/main/resources"
             }
 
-            sh "cp -rf /var/backend_config/application.yml ./resources/"
+            sh "cp -rf /var/backend_config/application.yml .src/main/resources/"
         }
 
         stage('Build Gradle'){
