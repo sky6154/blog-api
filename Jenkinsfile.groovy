@@ -19,7 +19,6 @@ node {
         }
 
         stage('Build Gradle'){
-            sh "gradle wrapper" // need to create it before gradlew
             sh "chmod +x gradlew"
             sh "./gradlew build"
         }
