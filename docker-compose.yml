@@ -11,3 +11,8 @@ services:
 
                 ports:
                        - "80:80"
+
+                command: >
+                      -c "
+                      java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=live -jar /develobeer.jar
+                      "
