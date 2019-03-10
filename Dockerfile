@@ -7,4 +7,4 @@ COPY /build/libs/develobeer-latest.jar develobeer.jar
 EXPOSE 80
 
 # Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.sprofiles.active=live","-Dserver.port=80","-jar","/develobeer.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=live","-Dserver.port=80","-jar","/develobeer.jar"]
