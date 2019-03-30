@@ -43,7 +43,7 @@ spring:
     hibernate:
       ddl-auto: none
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # use InnoDB
-    show-sql: true
+#   show-sql: true
 
   datasource:
     blog:
