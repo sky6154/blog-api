@@ -2,6 +2,7 @@
 
 application.yml은 git에서 제외되어 있으며 /src/main/resources/application.yml 에 넣어야 합니다.
 
+```
 spring:
   profiles:
     active: test
@@ -57,3 +58,4 @@ spring:
 origin:
   hosts:
     - https://develobeer.blog
+```
