@@ -36,7 +36,7 @@ public class BlogPost {
     @UpdateTimestamp
     private Timestamp modifyDate;
 
-    @Column(name="reg_date")
+    @Column(name="reg_date", updatable = false)
     @CreationTimestamp
     private Timestamp regDate;
 

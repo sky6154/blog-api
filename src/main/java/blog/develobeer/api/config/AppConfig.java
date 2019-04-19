@@ -2,7 +2,6 @@ package blog.develobeer.api.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @ComponentScan("blog.develobeer.api")
-@ConfigurationProperties(prefix="origin")
 @EnableWebMvc
 @Data
 public class AppConfig implements WebMvcConfigurer {
