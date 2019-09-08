@@ -12,19 +12,24 @@ import java.util.List;
 
 @Service
 public class BlogService {
+
+    private BlogPostRepository blogPostRepository;
+
     @Autowired
-    private BlogPostRepository bpr;
+    public BlogService(BlogPostRepository blogPostRepository){
+        this.blogPostRepository = blogPostRepository;
+    }
 
     public List getAllPost(){
-        return bpr.findAll();
+        return blogPostRepository.findAll();
     }
 
     public BlogPost getPostById(Integer id){
-        return bpr.findById(id).orElse(null);
+        return blogPostRepository.findById(id).orElse(null);
     }
 
     public List<BlogPost> getPopularPost(){
-        return bpr.findTop3ByOrderByHitsDesc();
+        return blogPostRepository.findTop3ByOrderByHitsDesc();
     }
 
     public List<BlogPost> getRecentPost(){
@@ -37,6 +42,6 @@ public class BlogService {
         Timestamp start = new Timestamp(calendar.getTimeInMillis());
         Timestamp end = new Timestamp(date.getTime());
 
-        return bpr.findTop3ByRegDateBetweenOrderByRegDateDesc(start, end);
+        return blogPostRepository.findTop3ByRegDateBetweenOrderByRegDateDesc(start, end);
     }
 }
