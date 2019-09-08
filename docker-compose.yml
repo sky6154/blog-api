@@ -1,18 +1,18 @@
 version: '3'
 
 services:
-        my_blog_api:
-                build:
-                        context: .
+  my_blog_api:
+    build:
+      context: .
 
-                image: blog-api:latest
+    image: blog-api:latest
 
-                container_name: myBlogAPI
+    container_name: myBlogAPI
 
-                ports:
-                       - "80:80"
+    ports:
+      - "80:80"
 
-                command: >
-                      -c "
-                      java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=live -jar /develobeer.jar
-                      "
+    command: >
+      -c "
+      java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=live -jar /develobeer.jar
+      "
