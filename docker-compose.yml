@@ -9,6 +9,12 @@ services:
 
     container_name: myBlogAPI
 
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+
     ports:
       - "80:80"
 
