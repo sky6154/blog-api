@@ -1,20 +1,24 @@
-package blog.develobeer.api.domain.blog;
+package blog.develobeer.api.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Data
+@Setter
+@Getter
 @Entity
+@ToString
 @Table(name="blog_post")
 public class BlogPost {
 
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer seq;
 
     @Column
@@ -30,7 +34,7 @@ public class BlogPost {
     private Integer boardID;
 
     @Column(name="is_delete")
-    private Character isDelete;
+    private boolean isDelete;
 
     @Column(name="modify_date")
     @UpdateTimestamp

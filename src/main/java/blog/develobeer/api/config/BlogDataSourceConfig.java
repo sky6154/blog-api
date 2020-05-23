@@ -1,5 +1,6 @@
 package blog.develobeer.api.config;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -22,7 +23,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"blog.develobeer.api.dao.blog"})
+        basePackages = {"blog.develobeer.api.dao"})
 public class BlogDataSourceConfig {
 
     protected Map<String, Object> jpaProperties() {
@@ -36,10 +37,16 @@ public class BlogDataSourceConfig {
     }
 
     @Primary
-    @Bean(name = "dataSource")
+    @Bean(name = "hikariConfig")
     @ConfigurationProperties(prefix = "spring.datasource.blog")
-    public DataSource dataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+    public HikariConfig hikariConfig() {
+        return new HikariConfig();
+    }
+
+    @Primary
+    @Bean(name = "dataSource")
+    public DataSource dataSource(@Qualifier("hikariConfig") HikariConfig hikariConfig) {
+        return new HikariDataSource(hikariConfig);
     }
 
     @Primary
@@ -48,7 +55,7 @@ public class BlogDataSourceConfig {
             EntityManagerFactoryBuilder builder, @Qualifier("dataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("blog.develobeer.api.domain.blog")
+                .packages("blog.develobeer.api.domain")
                 .persistenceUnit("blog")
                 .properties(jpaProperties())
                 .build();

@@ -27,3 +27,6 @@
 
 ### settings ###
 src/main/resources/application.yml
+
+### querydsl ###
+src/main/generated/
