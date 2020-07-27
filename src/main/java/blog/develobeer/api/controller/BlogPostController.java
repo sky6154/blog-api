@@ -17,11 +17,6 @@ public class BlogPostController {
         this.blogService = blogService;
     }
 
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public ResponseEntity getAllPost() {
-        return ResponseEntity.ok(blogService.getAllPost());
-    }
-
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
     public ResponseEntity getPostById(@PathVariable("postId") Integer postId) {
         return ResponseEntity.ok(blogService.getPostById(postId));

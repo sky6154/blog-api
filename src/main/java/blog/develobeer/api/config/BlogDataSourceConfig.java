@@ -26,15 +26,15 @@ import java.util.Map;
         basePackages = {"blog.develobeer.api.dao"})
 public class BlogDataSourceConfig {
 
-    protected Map<String, Object> jpaProperties() {
-        Map<String, Object> props = new HashMap<>();
-//        props.put("hibernate.physical_naming_strategy", PhysicalNamingStrategyImpl.class);
-        props.put("hibernate.show_sql", true);
-        props.put("hibernate.database_platform", "org.hibernate.dialect.MySQL5InnoDBDialect");
-        props.put("hibernate.hbm2ddl.auto", "none");
-
-        return props;
-    }
+//    protected Map<String, Object> jpaProperties() {
+//        Map<String, Object> props = new HashMap<>();
+////        props.put("hibernate.physical_naming_strategy", PhysicalNamingStrategyImpl.class);
+//        props.put("hibernate.show_sql", true);
+//        props.put("hibernate.database_platform", "org.hibernate.dialect.MySQL5InnoDBDialect");
+//        props.put("hibernate.hbm2ddl.auto", "none");
+//
+//        return props;
+//    }
 
     @Primary
     @Bean(name = "hikariConfig")
@@ -57,7 +57,7 @@ public class BlogDataSourceConfig {
                 .dataSource(dataSource)
                 .packages("blog.develobeer.api.domain")
                 .persistenceUnit("blog")
-                .properties(jpaProperties())
+//                .properties(jpaProperties())
                 .build();
     }
 

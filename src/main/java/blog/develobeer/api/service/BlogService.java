@@ -7,26 +7,26 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
 public class BlogService {
 
     private BlogPostRepo blogPostRepo;
-    private final int PAGE_SIZE = 5;
+    private static final int PAGE_SIZE = 5;
 
     @Autowired
     public BlogService(BlogPostRepo blogPostRepo){
         this.blogPostRepo = blogPostRepo;
     }
 
-    public List getAllPost(){
-        return blogPostRepo.findAll();
+    public Page<BlogPost> getAllPost(int page){
+        PageRequest pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
+        return blogPostRepo.getAll(pageRequest);
     }
 
     public BlogPost getPostById(Integer id){
@@ -38,14 +38,21 @@ public class BlogService {
     }
 
     public List<BlogPost> getRecentPost(){
-        Timestamp start = Timestamp.valueOf(LocalDateTime.now());
-        Timestamp end = Timestamp.valueOf(LocalDateTime.now().minusDays(7));
+        LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+
+        Timestamp start = Timestamp.valueOf(now);
+        Timestamp end = Timestamp.valueOf(now.minusDays(7));
 
         return blogPostRepo.getRecentPost(start, end);
     }
 
     public Page<BlogPost> getPost(int page){
-        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
+        PageRequest pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
         return blogPostRepo.getPost(pageRequest);
+    }
+
+    public Page<BlogPost> getPostList(int boardId, int page){
+        PageRequest pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
+        return blogPostRepo.getPostList(boardId, pageRequest);
     }
 }

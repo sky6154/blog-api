@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Setter
@@ -14,7 +15,9 @@ import java.sql.Timestamp;
 @Entity
 @ToString
 @Table(name="blog_post")
-public class BlogPost {
+public class BlogPost implements Serializable {
+
+    private static final long serialVersionUID = -434819666600975557L;
 
     @Id
     @Column
