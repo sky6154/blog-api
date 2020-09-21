@@ -31,9 +31,4 @@ public class BlogPostController {
     public ResponseEntity getRecentPost() {
         return ResponseEntity.ok(blogService.getRecentPost());
     }
-
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public ResponseEntity getPost(@RequestParam Integer page) {
-        return ResponseEntity.ok(blogService.getPost(page));
-    }
 }

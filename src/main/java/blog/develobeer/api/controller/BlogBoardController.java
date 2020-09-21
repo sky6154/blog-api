@@ -16,18 +16,13 @@ public class BlogBoardController {
         this.blogService = blogService;
     }
 
-    @RequestMapping(value = "/{boardId}/get", method = RequestMethod.GET)
-    public ResponseEntity getPostById(@PathVariable("boardId") Integer boardId, @RequestParam Integer page) {
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public ResponseEntity getPostListById(@RequestParam Integer boardId, @RequestParam Integer page) {
         if(boardId == 0){
             return ResponseEntity.ok(blogService.getAllPost(page));
         }
         else{
             return ResponseEntity.ok(blogService.getPostList(boardId, page));
         }
-    }
-
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public ResponseEntity getPost(@RequestParam Integer page) {
-        return ResponseEntity.ok(blogService.getPost(page));
     }
 }

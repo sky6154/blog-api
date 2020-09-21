@@ -11,6 +11,6 @@ public interface QBlogPostRepo {
     Page<BlogPost> getAll(Pageable pageable);
     List<BlogPost> getRecentPost(Timestamp start, Timestamp end);
     List<BlogPost> getPopularPost();
-    Page<BlogPost> getPost(Pageable pageable);
     Page<BlogPost> getPostList(int boardId, Pageable pageable);
+    BlogPost getPostById(int postId);
 }

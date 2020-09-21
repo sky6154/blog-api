@@ -30,7 +30,7 @@ public class BlogService {
     }
 
     public BlogPost getPostById(Integer id){
-        return blogPostRepo.findById(id).orElse(null);
+        return blogPostRepo.getPostById(id);
     }
 
     public List<BlogPost> getPopularPost(){
@@ -44,11 +44,6 @@ public class BlogService {
         Timestamp end = Timestamp.valueOf(now.minusDays(7));
 
         return blogPostRepo.getRecentPost(start, end);
-    }
-
-    public Page<BlogPost> getPost(int page){
-        PageRequest pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
-        return blogPostRepo.getPost(pageRequest);
     }
 
     public Page<BlogPost> getPostList(int boardId, int page){

@@ -34,7 +34,7 @@ public class BlogPost implements Serializable {
     private Integer hits;
 
     @Column(name="board_id")
-    private Integer boardID;
+    private Integer boardId;
 
     @Column(name="is_delete")
     private boolean isDelete;
@@ -47,4 +47,6 @@ public class BlogPost implements Serializable {
     @CreationTimestamp
     private Timestamp regDate;
 
+    @Transient
+    private String boardName;
 }
