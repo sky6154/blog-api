@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +58,7 @@ public class QBlogPostRepoImpl implements QBlogPostRepo {
     }
 
     @Override
-    public List<BlogPost> getRecentPost(Timestamp start, Timestamp end) {
+    public List<BlogPost> getRecentPost(LocalDateTime start, LocalDateTime end) {
         return blogQueryFactory
                 .selectFrom(blogPost)
                 .innerJoin(blogBoard)

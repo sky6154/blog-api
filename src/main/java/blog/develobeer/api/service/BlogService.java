@@ -40,10 +40,7 @@ public class BlogService {
     public List<BlogPost> getRecentPost(){
         LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
-        Timestamp start = Timestamp.valueOf(now);
-        Timestamp end = Timestamp.valueOf(now.minusDays(7));
-
-        return blogPostRepo.getRecentPost(start, end);
+        return blogPostRepo.getRecentPost(now.minusDays(7), now);
     }
 
     public Page<BlogPost> getPostList(int boardId, int page){

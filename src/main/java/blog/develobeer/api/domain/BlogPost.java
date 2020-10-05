@@ -8,7 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -41,11 +41,11 @@ public class BlogPost implements Serializable {
 
     @Column(name="modify_date")
     @UpdateTimestamp
-    private Timestamp modifyDate;
+    private LocalDateTime modifyDate;
 
     @Column(name="reg_date", updatable = false)
     @CreationTimestamp
-    private Timestamp regDate;
+    private LocalDateTime regDate;
 
     @Transient
     private String boardName;
