@@ -1,5 +1,6 @@
 #!/bin/sh
 {
+  # remove legacy images
   # blue-green 배포 방식이므로, 어짜피 service 되고 있지 않은 service 이므로 배포전 삭제한다.
   docker service rm blog-api
 }
