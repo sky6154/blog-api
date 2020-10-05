@@ -4,8 +4,8 @@ import jenkins.*
 import jenkins.model.*
 
 node {
-    def NAME="blog-api"
-    def DOCKER_REPO="hub.develobeer.blog"
+    def NAME = "blog-api"
+    def DOCKER_REPO = "hub.develobeer.blog"
 
     try {
         stage('Checkout') {
@@ -31,7 +31,7 @@ node {
         switch (params.JOB) {
             case "build&deploy":
 
-                stage("docker build with tag"){
+                stage("docker build with tag") {
                     sh "docker build . -t ${DOCKER_REPO}/${NAME}:${shortRevision}"
                 }
 
@@ -47,9 +47,9 @@ node {
 
                 if ("${env.CURRENT_BACK_ENV}" == "blue") {
                     stage('deploy swarm manager') {
-                        try {
-                            deployManager("GreenB1", shortRevision)
+                        deployManager("GreenB1", shortRevision)
 
+                        if(currentBuild.result == "SUCCESS"){
                             stage('overwrite env') {
                                 overwriteEnv("green")
                             }
@@ -62,15 +62,12 @@ node {
                                 sh "docker kill -s HUP myNginx"
                             }
                         }
-                        catch(err){
-                            echo err.getMessage()
-                        }
                     }
                 } else { // green
                     stage('deploy swarm manager') {
-                        try {
-                            deployManager("BlueB1", shortRevision)
+                        deployManager("BlueB1", shortRevision)
 
+                        if(currentBuild.result == "SUCCESS") {
                             stage('overwrite env') {
                                 overwriteEnv("blue")
                             }
@@ -82,9 +79,6 @@ node {
                             stage('reload nginx') {
                                 sh "docker kill -s HUP myNginx"
                             }
-                        }
-                        catch(err){
-                            echo err.getMessage()
                         }
                     }
                 }
@@ -110,7 +104,8 @@ def deployManager(configName, shortRevision) {
                                   ./deploy-manager.sh ${shortRevision}")
                     ],
             )
-    ], failOnError : true)
+    ],
+            failOnError: true)
 }
 
 def overwriteEnv(activeEnv) {
