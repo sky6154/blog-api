@@ -2,13 +2,11 @@ version: '3'
 
 services:
   my_blog_api:
-    build:
-      context: .
-
     image: hub.develobeer.blog/blog-api:${TAG}
     container_name: myBlogAPI
 
     deploy:
+      replicas: 2
       resources:
         limits:
           cpus: '0.50'
