@@ -68,6 +68,7 @@ public class QBlogPostRepoImpl implements QBlogPostRepo {
                                 .and(blogPost.regDate.between(start, end))
                         .and(blogBoard.isOpen.eq(true))
                 )
+                .orderBy(blogPost.seq.desc())
                 .limit(WIDGET_SHOW_COUNT)
                 .fetch();
     }
