@@ -109,7 +109,8 @@ def deployManager(configName, shortRevision) {
                                   chmod 744 ./deploy-manager.sh && \
                                   ./deploy-manager.sh ${shortRevision}")
                     ],
-            )
+            ),
+            failOnError(true)
     ])
 }
 
