@@ -13,7 +13,7 @@ node {
         }
 
         def shortRevision = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-        println("short revision :" + shortRevision)
+        println("short revision : " + shortRevision)
 
         stage('Copy application.yml') {
             if (!fileExists('./src/main/resources')) {

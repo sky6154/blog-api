@@ -2,7 +2,7 @@ FROM openjdk:10-jdk-slim
 MAINTAINER kokj <sky6154@gmail.com>
 
 VOLUME /tmp
-COPY /build/libs/develobeer-latest.jar develobeer-blog.jar
+COPY /build/libs/develobeer-blog-latest.jar develobeer-blog.jar
 
 EXPOSE 80
 
