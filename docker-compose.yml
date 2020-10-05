@@ -3,7 +3,7 @@ version: '3'
 services:
   my_blog_api:
     image: hub.develobeer.blog/blog-api:${TAG}
-    container_name: myBlogAPI
+#    container_name: myBlogAPI
 
     deploy:
       replicas: 2
