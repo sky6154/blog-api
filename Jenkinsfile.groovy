@@ -47,35 +47,45 @@ node {
 
                 if ("${env.CURRENT_BACK_ENV}" == "blue") {
                     stage('deploy swarm manager') {
-                        deployManager("GreenB1", shortRevision)
-                    }
+                        try {
+                            deployManager("GreenB1", shortRevision)
 
-                    stage('overwrite env') {
-                        overwriteEnv("green")
-                    }
+                            stage('overwrite env') {
+                                overwriteEnv("green")
+                            }
 
-                    stage('overwrite nginx conf') {
-                        sh "docker cp /var/deploy_env_conf/green_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
-                    }
+                            stage('overwrite nginx conf') {
+                                sh "docker cp /var/deploy_env_conf/green_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
+                            }
 
-                    stage('reload nginx') {
-                        sh "docker kill -s HUP myNginx"
+                            stage('reload nginx') {
+                                sh "docker kill -s HUP myNginx"
+                            }
+                        }
+                        catch(err){
+                            echo err.getMessage()
+                        }
                     }
                 } else { // green
                     stage('deploy swarm manager') {
-                        deployManager("BlueB1", shortRevision)
-                    }
+                        try {
+                            deployManager("BlueB1", shortRevision)
 
-                    stage('overwrite env') {
-                        overwriteEnv("blue")
-                    }
+                            stage('overwrite env') {
+                                overwriteEnv("blue")
+                            }
 
-                    stage('overwrite nginx conf') {
-                        sh "docker cp /var/deploy_env_conf/blue_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
-                    }
+                            stage('overwrite nginx conf') {
+                                sh "docker cp /var/deploy_env_conf/blue_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
+                            }
 
-                    stage('reload nginx') {
-                        sh "docker kill -s HUP myNginx"
+                            stage('reload nginx') {
+                                sh "docker kill -s HUP myNginx"
+                            }
+                        }
+                        catch(err){
+                            echo err.getMessage()
+                        }
                     }
                 }
                 break
