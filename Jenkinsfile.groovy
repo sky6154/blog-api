@@ -101,8 +101,9 @@ def deployManager(configName, shortRevision) {
                     transfers: [
                             sshTransfer(sourceFiles: 'docker-compose.yml, deploy-manager.sh',
                                     execCommand: "cd /root && \
-                                  chmod 744 ./deploy-manager.sh && \
-                                  ./deploy-manager.sh ${shortRevision}")
+                                    docker login hub.develobeer.blog -u ${params.DOCKER_REPO_USER} -p ${params.DOCKER_REPO_PASS} && \
+                                    chmod 744 ./deploy-manager.sh && \
+                                    ./deploy-manager.sh ${shortRevision}")
                     ],
             )
     ],
