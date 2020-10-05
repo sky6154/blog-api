@@ -82,6 +82,10 @@ node {
                         }
                     }
                 }
+
+            println("current : " + currentBuild.result)
+            
+
                 break
         }
     }
