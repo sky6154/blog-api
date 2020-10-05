@@ -1,93 +1,90 @@
-
-import jenkins.*
-import jenkins.model.*
 import hudson.*
 import hudson.model.*
+import jenkins.*
+import jenkins.model.*
 
 node {
-    try{
-        stage('Checkout'){
+
+    environment {
+        NAME="blog-api"
+        DOCKER_REPO="hub.develobeer.blog"
+    }
+
+    try {
+        stage('Checkout') {
             checkout scm
         }
 
-        stage('Copy application.yml'){
-            if(!fileExists('./src/main/resources')){
+        def shortRevision = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+        println("short revision :" + shortRevision)
+
+        stage('Copy application.yml') {
+            if (!fileExists('./src/main/resources')) {
                 sh "mkdir ./src/main/resources"
             }
 
             sh "cp -rf /var/backend_config/application.yml ./src/main/resources/"
         }
 
-        stage('Build Gradle'){
+        stage('Build Gradle') {
             sh "chmod +x gradlew"
             sh "./gradlew build"
         }
 
-        switch(params.JOB){
+        switch (params.JOB) {
             case "build&deploy":
-                stage('docker-compose build & save image'){
-                    sh "docker-compose build"
-                    sh "docker save -o blog-api.tar blog-api:latest"
+
+                stage("docker build with tag"){
+                    sh "docker build -t ${DOCKER_REPO}/${NAME}:${shortRevision}"
                 }
 
-                def deployWorkerList = []
+                stage("docker login & image push") {
+                    sh "docker login hub.develobeer.blog -u ${params.DOCKER_REPO_USER} -p ${params.DOCKER_REPO_PASS}"
+                    sh "docker push ${DOCKER_REPO}/${NAME}:${shortRevision}"
+                }
 
-                if("${env.CURRENT_BACK_ENV}" == "blue"){
-                    deployWorkerList.add("GreenB2")
+//                stage('docker-compose build & save image') {
+//                    sh "docker-compose build"
+//                    sh "docker save -o blog-api.tar blog-api:latest"
+//                }
 
-                    stage('deploy swarm worker'){
-                        def stepsForParallel = deployWorkerList.collectEntries {
-                            ["${it}" : deployWorker(it)]
-                        }
-                        parallel stepsForParallel
+                if ("${env.CURRENT_BACK_ENV}" == "blue") {
+                    stage('deploy swarm manager') {
+                        deployManager("GreenB1", shortRevision)
                     }
 
-                    stage('deploy swarm manager'){
-                        deployManager("GreenB1")
-                    }
-
-                    stage('overwrite env'){
+                    stage('overwrite env') {
                         overwriteEnv("green")
                     }
 
-                    stage('overwrite nginx conf'){
+                    stage('overwrite nginx conf') {
                         sh "docker cp /var/deploy_env_conf/green_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
                     }
 
-                    stage('reload nginx'){
+                    stage('reload nginx') {
                         sh "docker kill -s HUP myNginx"
                     }
-                }
-                else{
-                    deployWorkerList.add("BlueB2")
-
-                    stage('deploy swarm worker'){
-                        def stepsForParallel = deployWorkerList.collectEntries {
-                            ["${it}" : deployWorker(it)]
-                        }
-                        parallel stepsForParallel
+                } else { // green
+                    stage('deploy swarm manager') {
+                        deployManager("BlueB1", shortRevision)
                     }
 
-                    stage('deploy swarm manager'){
-                        deployManager("BlueB1")
-                    }
-
-                    stage('overwrite env'){
+                    stage('overwrite env') {
                         overwriteEnv("blue")
                     }
 
-                    stage('overwrite nginx conf'){
+                    stage('overwrite nginx conf') {
                         sh "docker cp /var/deploy_env_conf/blue_back.conf myNginx:/etc/nginx/conf.d/target_back.conf"
                     }
 
-                    stage('reload nginx'){
+                    stage('reload nginx') {
                         sh "docker kill -s HUP myNginx"
                     }
                 }
                 break
         }
     }
-    catch (err){
+    catch (err) {
         currentBuild.result = 'FAILED'
         println(err.getMessage())
         throw err
@@ -95,53 +92,32 @@ node {
 }
 
 
-def deployManager(configName){
+def deployManager(configName, shortRevision) {
     sshPublisher(publishers: [
             sshPublisherDesc(
                     configName: configName,
                     transfers: [
-                            sshTransfer(sourceFiles: 'blog-api.tar, deploy-manager.sh',
+                            sshTransfer(sourceFiles: 'docker-compose.yml, deploy-manager.sh',
                                     execCommand: "cd /root && \
                                   chmod 744 ./deploy-manager.sh && \
-                                  ./deploy-manager.sh")
+                                  ./deploy-manager.sh ${shortRevision}")
                     ],
             )
     ])
 }
 
-def deployWorker(configName){
-    // We need to wrap what we return in a Groovy closure, or else it's invoked
-    // when this method is called, not when we pass it to parallel.
-    // To do this, you need to wrap the code below in { }, and either return
-    // that explicitly, or use { -> } syntax.
-    return {
-        sshPublisher(publishers: [
-                sshPublisherDesc(
-                        configName: configName,
-                        transfers: [
-                                sshTransfer(sourceFiles: 'blog-api.tar, deploy-worker.sh',
-                                        execCommand: "cd /root && \
-                                    chmod 744 ./deploy-worker.sh && \
-                                    ./deploy-worker.sh")
-                        ],
-                )
-        ])
-    }
-}
-
-def overwriteEnv(activeEnv){
+def overwriteEnv(activeEnv) {
     Jenkins instance = Jenkins.getInstance()
     def globalNodeProperties = instance.getGlobalNodeProperties()
     def envVarsNodePropertyList = globalNodeProperties.getAll(hudson.slaves.EnvironmentVariablesNodeProperty.class)
     def newEnvVarsNodeProperty = null
     def envVars = null
 
-    if ( envVarsNodePropertyList == null || envVarsNodePropertyList.size() == 0 ) {
+    if (envVarsNodePropertyList == null || envVarsNodePropertyList.size() == 0) {
         newEnvVarsNodeProperty = new hudson.slaves.EnvironmentVariablesNodeProperty();
         globalNodeProperties.add(newEnvVarsNodeProperty)
         envVars = newEnvVarsNodeProperty.getEnvVars()
-    }
-    else {
+    } else {
         envVars = envVarsNodePropertyList.get(0).getEnvVars()
     }
 

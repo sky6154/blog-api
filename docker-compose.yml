@@ -5,8 +5,7 @@ services:
     build:
       context: .
 
-    image: blog-api:latest
-
+    image: hub.develobeer.blog/blog-api:${TAG}
     container_name: myBlogAPI
 
     deploy:
@@ -17,8 +16,3 @@ services:
 
     ports:
       - "80:80"
-
-    command: >
-      -c "
-      java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=live -jar /develobeer.jar
-      "
