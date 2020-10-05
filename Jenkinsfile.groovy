@@ -32,7 +32,7 @@ node {
             case "build&deploy":
 
                 stage("docker build with tag"){
-                    sh "docker build -t ${DOCKER_REPO}/${NAME}:${shortRevision}"
+                    sh "docker build . -t ${DOCKER_REPO}/${NAME}:${shortRevision}"
                 }
 
                 stage("docker login & image push") {
