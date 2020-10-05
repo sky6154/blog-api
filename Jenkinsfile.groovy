@@ -4,11 +4,8 @@ import jenkins.*
 import jenkins.model.*
 
 node {
-
-    environment {
-        NAME="blog-api"
-        DOCKER_REPO="hub.develobeer.blog"
-    }
+    def NAME="blog-api"
+    def DOCKER_REPO="hub.develobeer.blog"
 
     try {
         stage('Checkout') {
