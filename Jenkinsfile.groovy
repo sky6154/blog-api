@@ -49,7 +49,7 @@ node {
                     stage('deploy swarm manager') {
                         deployManager("GreenB1", shortRevision)
 
-                        if(currentBuild.result == "SUCCESS"){
+                        if (currentBuild.result == "SUCCESS") {
                             stage('overwrite env') {
                                 overwriteEnv("green")
                             }
@@ -67,7 +67,7 @@ node {
                     stage('deploy swarm manager') {
                         deployManager("BlueB1", shortRevision)
 
-                        if(currentBuild.result == "SUCCESS") {
+                        if (currentBuild.result == "SUCCESS") {
                             stage('overwrite env') {
                                 overwriteEnv("blue")
                             }
@@ -82,9 +82,6 @@ node {
                         }
                     }
                 }
-
-            println("current : " + currentBuild.result)
-            
 
                 break
         }
