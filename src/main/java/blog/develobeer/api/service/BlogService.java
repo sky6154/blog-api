@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -46,5 +47,10 @@ public class BlogService {
     public Page<BlogPost> getPostList(int boardId, int page){
         PageRequest pageRequest = PageRequest.of(page - 1, PAGE_SIZE);
         return blogPostRepo.getPostList(boardId, pageRequest);
+    }
+
+    @Transactional
+    public long addHits(int postId){
+        return blogPostRepo.addHits(postId);
     }
 }

@@ -136,4 +136,13 @@ public class QBlogPostRepoImpl implements QBlogPostRepo {
 
         return result;
     }
+
+    @Override
+    public long addHits(int postId) {
+        return blogQueryFactory
+                .update(blogPost)
+                .set(blogPost.hits, blogPost.hits.add(1))
+                .where(blogPost.seq.eq(postId))
+                .execute();
+    }
 }

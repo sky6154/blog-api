@@ -1,5 +1,6 @@
 package blog.develobeer.api.controller;
 
+import blog.develobeer.api.domain.BlogPost;
 import blog.develobeer.api.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,13 @@ public class BlogPostController {
 
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
     public ResponseEntity getPostById(@PathVariable("postId") Integer postId) {
-        return ResponseEntity.ok(blogService.getPostById(postId));
+        BlogPost blogPost = blogService.getPostById(postId);
+
+        if(blogPost.getSeq() != null){
+            blogService.addHits(postId);
+        }
+
+        return ResponseEntity.ok(blogPost);
     }
 
     @RequestMapping(value = "/get/popular", method = RequestMethod.GET)

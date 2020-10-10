@@ -13,4 +13,5 @@ public interface QBlogPostRepo {
     List<BlogPost> getPopularPost();
     Page<BlogPost> getPostList(int boardId, Pageable pageable);
     BlogPost getPostById(int postId);
+    long addHits(int postId);
 }
