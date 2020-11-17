@@ -1,4 +1,4 @@
-package blog.develobeer.api.dao;
+package blog.develobeer.api.repo;
 
 import blog.develobeer.api.domain.BlogPost;
 import com.querydsl.core.QueryResults;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

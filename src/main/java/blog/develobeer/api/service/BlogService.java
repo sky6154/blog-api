@@ -1,6 +1,6 @@
 package blog.develobeer.api.service;
 
-import blog.develobeer.api.dao.BlogPostRepo;
+import blog.develobeer.api.repo.BlogPostRepo;
 import blog.develobeer.api.domain.BlogPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

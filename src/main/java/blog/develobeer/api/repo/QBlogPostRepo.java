@@ -1,4 +1,4 @@
-package blog.develobeer.api.dao;
+package blog.develobeer.api.repo;
 
 import blog.develobeer.api.domain.BlogPost;
 import org.springframework.data.domain.Page;
